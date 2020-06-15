@@ -1,0 +1,58 @@
+<div class="login-box">
+{% extends "page.html" %}{% if announcement_login %} {% set announcement = announcement_login %} {% endif %} {% block login_widget %} {% endblock %} {% block main %} {% block login %}
+</div>
+<div class="masthead__video-container">
+    <video id="video" class="js-unveil js-masthead-video masthead__video" autoplay="" loop="" muted="" data-src="{{static_url("images/helloworld.mp4 ")}}">
+        <source src="{{static_url("images/helloworld.mp4 ")}}" type="video/mp4">
+    </video>
+</div>
+<div id="login-main" class="container">
+    <div class="leftcont">
+        <h1 class="large">大数据实验平台</h1>
+        <h4 class="large"><br>
+            快速生成实验环境，提供实验数据源<br><br>
+            保存实验内容，进行实验和测试<br><br>
+        </h4>
+    </div>
+    {% if custom_html %} {{ custom_html | safe }} {% elif login_service %}
+    <div class="service-login">
+        <a role="button" class='btn btn-jupyter btn-lg' href='{{authenticator_login_url}}'>
+    登录 {{login_service}}
+  </a>
+    </div>
+    {% else %}
+    <form action="{{login_url}}?next={{next}}" method="post" role="form">
+        <div class="auth-form-header">
+            登 录
+        </div>
+        <div class='auth-form-body'>
+
+            <p id='insecure-login-warning' class='hidden'>
+                警告: Swufelab使用了不安全的http 服务，我们建议使用https
+            </p>
+
+            {% if login_error %}
+            <p class="login_error">
+                {{login_error}}
+            </p>
+            {% endif %}
+            <label for="username_input">用户名:</label>
+            <input id="username_input" type="text" autocapitalize="off" autocorrect="off" class="form-control" name="username" val="{{username}}" tabindex="1" autofocus="autofocus" />
+            <label for='password_input'>密码:</label>
+            <input type="password" class="form-control" name="password" id="password_input" tabindex="2" />
+
+            <input type="submit" id="login_submit" class='btn btn-jupyter' value='登录' tabindex="3" />
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock login %} {% endblock %} {% block script %} {{ super() }}
+<script>
+    if (window.location.protocol === "http:") {
+        // unhide http warning
+        var warning = document.getElementById('insecure-login-warning');
+        warning.className = warning.className.replace(/\bhidden\b/, '');
+    }
+</script>
+
+{% endblock %}
